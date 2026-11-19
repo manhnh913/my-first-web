@@ -1,0 +1,80 @@
+:root {
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+  color: var(--color-text);
+  background: var(--color-background);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  --color-primary: #293d31;
+  --color-primary-hover: #3b5745;
+  --color-secondary: #8b4b32;
+  --color-accent: var(--color-secondary);
+  --color-cta: var(--color-primary);
+  --color-cta-hover: var(--color-primary-hover);
+  --color-text: #30362f;
+  --color-text-secondary: #555d53;
+  --color-muted: #62665d;
+  --color-background: #faf8f3;
+  --color-surface: #fff;
+  --color-surface-soft: #f8f6f1;
+  --color-surface-warm: #f5f0e7;
+  --color-border: #e5dfd3;
+  --color-on-primary: #fff;
+  --forest: var(--color-primary);
+  --forest-light: var(--color-primary-hover);
+  --terracotta: var(--color-accent);
+  --ink: var(--color-text);
+  --ink-soft: var(--color-text-secondary);
+  --muted: var(--color-muted);
+  --cream: var(--color-surface-warm);
+  --paper: var(--color-surface-soft);
+  --white: var(--color-surface);
+  --line: var(--color-border);
+  --font-body: 'Segoe UI', Tahoma, sans-serif;
+  --font-display: 'Iowan Old Style', 'Baskerville', 'Palatino Linotype', Georgia, serif;
+  --text-body: 0.9375rem;
+  --text-small: 0.8125rem;
+  --heading-one: clamp(2.85rem, 3.9vw, 4.1rem);
+  --heading-two: clamp(2.1rem, 3.8vw, 3rem);
+  --heading-three: 1.35rem;
+  --leading-body: 1.75;
+  --section-space: clamp(4.75rem, 8vw, 7rem);
+  --radius-card: 10px;
+
+  scroll-behavior: smooth;
+  scroll-padding-top: 90px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  font-size: var(--text-body);
+  line-height: var(--leading-body);
+}
+
+body,
+button,
+a {
+  font-family: var(--font-body);
+}
+
+img {
+  max-width: 100%;
+}
+
+::selection {
+  background: #d7b79c;
+  color: #1d2c25;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    scroll-behavior: auto;
+  }
+}
