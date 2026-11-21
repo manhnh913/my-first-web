@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://my-first-web-three-mocha.vercel.app/sitemap.xml

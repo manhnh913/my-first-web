@@ -685,6 +685,7 @@
 
 .menu-card__details {
   align-self: flex-start;
+  min-height: 44px;
   margin-top: auto;
 }
 
