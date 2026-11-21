@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import type { FormEvent } from 'react'
+import { restaurantProfile } from '../data/restaurantData'
 
 type BookingValues = {
   fullName: string
@@ -63,8 +64,8 @@ function validateBooking(values: BookingValues, minimumDate: string): BookingErr
 
   if (!values.time) {
     errors.time = 'Vui lòng chọn giờ đặt bàn.'
-  } else if (values.time < '10:00' || values.time > '22:00') {
-    errors.time = 'Nhà hàng nhận đặt bàn từ 10:00 đến 22:00.'
+  } else if (!/^\d{2}:\d{2}$/.test(values.time)) {
+    errors.time = 'Vui lòng chọn giờ hợp lệ.'
   }
 
   if (!values.guests.trim()) {
@@ -84,13 +85,13 @@ function ReservationSection() {
   const [values, setValues] = useState<BookingValues>(initialBookingValues)
   const [touched, setTouched] = useState<Partial<Record<BookingField, boolean>>>({})
   const [submitted, setSubmitted] = useState(false)
-  const [bookingSuccess, setBookingSuccess] = useState(false)
+  const [formChecked, setFormChecked] = useState(false)
   const minimumDate = getLocalDateValue()
   const errors = validateBooking(values, minimumDate)
 
   function updateField(field: BookingField, value: string) {
     setValues((currentValues) => ({ ...currentValues, [field]: value }))
-    setBookingSuccess(false)
+    setFormChecked(false)
   }
 
   function markTouched(field: BookingField) {
@@ -104,7 +105,7 @@ function ReservationSection() {
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
     setSubmitted(true)
-    setBookingSuccess(false)
+    setFormChecked(false)
 
     const invalidField = (
       ['fullName', 'phone', 'email', 'date', 'time', 'guests'] as const
@@ -117,7 +118,7 @@ function ReservationSection() {
 
     setSubmitted(false)
     setTouched({})
-    setBookingSuccess(true)
+    setFormChecked(true)
   }
 
   const fullNameError = getVisibleError('fullName')
@@ -130,30 +131,42 @@ function ReservationSection() {
   return (
     <section
       className="reservation-section"
-      id="dat-ban"
+      id="lien-he"
       aria-labelledby="reservation-title"
     >
       <div className="container reservation-section__layout">
         <div className="reservation-section__intro">
-          <p className="eyebrow">MỘT CHỖ NGỒI ĐANG CHỜ BẠN</p>
-          <h2 id="reservation-title">Đặt bàn ngay hôm nay</h2>
+          <p className="eyebrow">{restaurantProfile.name} · ĐẶT BÀN</p>
+          <h2 id="reservation-title">Liên hệ &amp; đặt bàn</h2>
           <p>
-            Dành cho mình một khoảng thời gian thật ngon lành tại An Nhiên. Hãy
-            gửi thông tin để chúng tôi chuẩn bị đón bạn.
+            Liên hệ trực tiếp để xác nhận giờ phục vụ, tình trạng bàn và thông
+            tin thực đơn.
           </p>
 
           <div className="reservation-section__contact">
-            <a className="reservation-phone" href="tel:+84123456789">
-              0123 456 789
+            <a className="reservation-phone" href={`tel:${restaurantProfile.hotlineTel}`}>
+              {restaurantProfile.hotline}
             </a>
-            <span>123 Nguyễn Huệ, Quận 1, TP. Hồ Chí Minh</span>
-            <a href="mailto:hello@annhien.example">
-              hello@annhien.example (email mẫu)
+            <span>{restaurantProfile.address}</span>
+            <span>{restaurantProfile.venue}</span>
+            <span>{restaurantProfile.seatingCapacity}</span>
+            <a
+              className="reservation-map-link"
+              href={restaurantProfile.mapsUrl}
+              target="_blank"
+              rel="noreferrer"
+            >
+              Xem bản đồ <span aria-hidden="true">↗</span>
             </a>
           </div>
         </div>
 
-        <form className="booking-form" noValidate onSubmit={handleSubmit}>
+        <form
+          className="booking-form"
+          id="dat-ban"
+          noValidate
+          onSubmit={handleSubmit}
+        >
           <div className="booking-form__grid">
             <div className="booking-form__field">
               <label htmlFor="booking-fullName">Họ và tên *</label>
@@ -261,13 +274,13 @@ function ReservationSection() {
             </div>
 
             <div className="booking-form__field">
-              <label htmlFor="booking-time">Giờ đặt bàn * <span>(10:00–22:00)</span></label>
+              <label htmlFor="booking-time">
+                Giờ mong muốn *
+              </label>
               <input
                 id="booking-time"
                 name="time"
                 type="time"
-                min="10:00"
-                max="22:00"
                 required
                 value={values.time}
                 aria-invalid={Boolean(timeError)}
@@ -296,19 +309,18 @@ function ReservationSection() {
 
           <div className="booking-form__actions">
             <p className="booking-form__disclaimer">
-              Đây là biểu mẫu demo frontend. Thông tin chưa được gửi hoặc lưu; vui
-              lòng gọi nhà hàng để xác nhận đặt bàn.
+              Biểu mẫu chỉ kiểm tra thông tin trên website này; chưa gửi yêu cầu
+              đến nhà hàng. Gọi hotline để xác nhận.
             </p>
             <button className="button button--primary booking-form__submit" type="submit">
-              Gửi yêu cầu đặt bàn
+              Kiểm tra thông tin
             </button>
           </div>
 
-          {bookingSuccess && (
-            <p className="booking-form__success" role="status" aria-live="polite">
-              Cảm ơn {values.fullName.trim()}! Yêu cầu demo đã được ghi nhận trên
-              màn hình, chưa được gửi đến nhà hàng. Vui lòng gọi 0123 456 789 để
-              xác nhận.
+          {formChecked && (
+            <p className="booking-form__status" role="status" aria-live="polite">
+              Thông tin đã được kiểm tra trên website này nhưng chưa gửi đến nhà
+              hàng. Vui lòng gọi {restaurantProfile.hotline} để xác nhận yêu cầu.
             </p>
           )}
         </form>

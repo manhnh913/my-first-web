@@ -1,51 +1,48 @@
+import { restaurantProfile } from '../data/restaurantData'
+
+const currentYear = new Date().getFullYear()
+
 function Footer() {
   return (
-    <footer className="site-footer" id="lien-he">
+    <footer className="site-footer">
       <div className="container">
         <div className="site-footer__main">
           <div className="site-footer__brand">
             <a className="site-brand site-brand--footer" href="#trang-chu">
-              <span className="site-brand__mark" aria-hidden="true">
-                <svg viewBox="0 0 40 40" focusable="false">
-                  <path d="M29.5 9.5c-10.3.2-17.8 4.7-18.2 12.1-.2 4.4 2.8 7.4 7 7.2 7.5-.3 11.1-9.4 11.2-19.3Z" />
-                  <path d="M12.5 31c3.4-5.8 7.8-10.2 13.2-13.6" />
-                </svg>
-              </span>
               <span className="site-brand__name">
-                An Nhiên <span>Restaurant</span>
+                {restaurantProfile.name} <span>{restaurantProfile.descriptor}</span>
               </span>
             </a>
-            <p>
-              Món ngon lành, phút giây an yên. Hẹn gặp bạn tại An Nhiên.
-            </p>
+            <p>Restaurant &amp; Cafe tại Hà Nội.</p>
           </div>
 
           <div className="site-footer__details">
-            <h2>Liên hệ</h2>
-            <p>123 Nguyễn Huệ, Quận 1, TP. Hồ Chí Minh</p>
-            <a href="tel:+84123456789">0123 456 789</a>
-            <a href="mailto:hello@annhien.example">
-              hello@annhien.example (email mẫu)
+            <h2>Địa chỉ</h2>
+            <p>{restaurantProfile.address}</p>
+            <a href={restaurantProfile.mapsUrl} target="_blank" rel="noreferrer">
+              Xem bản đồ <span aria-hidden="true">↗</span>
             </a>
           </div>
 
           <div className="site-footer__details">
-            <h2>Giờ mở cửa</h2>
-            <p>Thứ Hai – Chủ Nhật</p>
-            <p>10:00 – 22:00</p>
+            <h2>Đặt bàn</h2>
+            <a href={`tel:${restaurantProfile.hotlineTel}`}>
+              {restaurantProfile.hotline}
+            </a>
+            <p>Gọi để xác nhận giờ phục vụ và tình trạng bàn.</p>
           </div>
 
           <div className="site-footer__details">
-            <h2>Theo dõi chúng tôi</h2>
-            <p className="site-footer__social-placeholder">
-              Facebook và Instagram: thông tin mẫu, đang cập nhật.
-            </p>
+            <h2>Khám phá</h2>
+            <a href="#ve-chung-toi">Giới thiệu</a>
+            <a href="#thuc-don">Thực đơn</a>
+            <a href="#khong-gian">Không gian</a>
           </div>
         </div>
 
         <div className="site-footer__bottom">
-          <p>© An Nhiên Restaurant. Bảo lưu mọi quyền.</p>
-          <p>Thông tin trên website là dữ liệu giới thiệu mẫu.</p>
+          <p>© {currentYear} {restaurantProfile.fullName}.</p>
+          <p>Biểu mẫu đặt bàn chưa gửi dữ liệu đến nhà hàng.</p>
         </div>
       </div>
     </footer>

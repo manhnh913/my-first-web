@@ -1,8 +1,9 @@
 import { useEffect, useRef } from 'react'
-import type { FeaturedDish } from '../data/restaurantData'
+import type { PublicMenuItem } from '../data/publicMenu'
+import { restaurantProfile } from '../data/restaurantData'
 
 type DishDetailModalProps = {
-  dish: FeaturedDish | null
+  dish: PublicMenuItem | null
   onClose: () => void
 }
 
@@ -76,12 +77,6 @@ function DishDetailModal({ dish, onClose }: DishDetailModalProps) {
         aria-describedby="dish-dialog-description"
         tabIndex={-1}
       >
-        <img
-          className="dish-dialog__image"
-          src={dish.image}
-          alt={dish.imageAlt}
-          decoding="async"
-        />
         <div className="dish-dialog__content">
           <button
             className="dish-dialog__close"
@@ -92,10 +87,18 @@ function DishDetailModal({ dish, onClose }: DishDetailModalProps) {
           >
             <span aria-hidden="true">×</span>
           </button>
-          <p className="eyebrow">{dish.categoryName}</p>
+          <p className="eyebrow">{dish.category}</p>
           <h2 id="dish-dialog-title">{dish.name}</h2>
-          <p id="dish-dialog-description">{dish.description}</p>
-          <p className="dish-dialog__price">Giá tham khảo: {dish.price}</p>
+          <p id="dish-dialog-description">
+            Vui lòng gọi để xác nhận tình trạng phục vụ và thông tin hiện tại
+            của món.
+          </p>
+          <a
+            className="button button--primary dish-dialog__call"
+            href={`tel:${restaurantProfile.hotlineTel}`}
+          >
+            Gọi {restaurantProfile.hotline}
+          </a>
         </div>
       </section>
     </div>

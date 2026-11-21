@@ -7,7 +7,7 @@ type NavigationProps = {
 
 const navigationItems = [
   { label: 'Trang chủ', href: '#trang-chu' },
-  { label: 'Về chúng tôi', href: '#ve-chung-toi' },
+  { label: 'Giới thiệu', href: '#ve-chung-toi' },
   { label: 'Thực đơn', href: '#thuc-don' },
   { label: 'Không gian', href: '#khong-gian' },
   { label: 'Liên hệ', href: '#lien-he' },

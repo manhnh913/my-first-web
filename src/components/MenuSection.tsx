@@ -1,13 +1,37 @@
-import { useState } from 'react'
-import { menuCategories } from '../data/restaurantData'
+import { useCallback, useEffect, useRef, useState } from 'react'
+import {
+  publicMenu,
+  publicMenuCategories,
+  type PublicMenuCategoryId,
+  type PublicMenuItem,
+} from '../data/publicMenu'
+import { restaurantProfile } from '../data/restaurantData'
+import DishDetailModal from './DishDetailModal'
 import SectionHeading from './SectionHeading'
 
 function MenuSection() {
-  const [activeCategoryId, setActiveCategoryId] = useState('all')
-  const visibleCategories =
+  const [activeCategoryId, setActiveCategoryId] = useState<
+    'all' | PublicMenuCategoryId
+  >('all')
+  const [selectedDish, setSelectedDish] = useState<PublicMenuItem | null>(null)
+  const triggerRef = useRef<HTMLButtonElement | null>(null)
+  const visibleItems =
     activeCategoryId === 'all'
-      ? menuCategories
-      : menuCategories.filter((category) => category.id === activeCategoryId)
+      ? publicMenu
+      : publicMenu.filter((item) => item.categoryId === activeCategoryId)
+  const closeModal = useCallback(() => setSelectedDish(null), [])
+
+  useEffect(() => {
+    if (!selectedDish) return
+
+    const previousOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+
+    return () => {
+      document.body.style.overflow = previousOverflow
+      triggerRef.current?.focus()
+    }
+  }, [selectedDish])
 
   return (
     <section
@@ -17,14 +41,18 @@ function MenuSection() {
     >
       <div className="container">
         <SectionHeading
-          eyebrow="THỰC ĐƠN"
-          title="Chọn vị bạn thương"
-          description="Từ món khai vị nhẹ nhàng đến món Việt đậm đà, luôn có điều hợp khẩu vị của bạn."
+          eyebrow="ẨM THỰC · 50 BISTRO"
+          title={`Ẩm thực tại ${restaurantProfile.name}`}
+          description="Một số tên món và đồ uống được Bảo Sơn giới thiệu. Giá và mô tả chi tiết chưa được xác nhận."
           id="menu-title"
           centered
         />
 
-        <div className="menu-filters" role="group" aria-label="Lọc thực đơn theo danh mục">
+        <div
+          className="menu-filters"
+          role="group"
+          aria-label="Lọc thực đơn theo danh mục"
+        >
           <button
             className={`menu-filter${activeCategoryId === 'all' ? ' is-active' : ''}`}
             type="button"
@@ -34,7 +62,7 @@ function MenuSection() {
           >
             Tất cả
           </button>
-          {menuCategories.map((category) => (
+          {publicMenuCategories.map((category) => (
             <button
               className={`menu-filter${activeCategoryId === category.id ? ' is-active' : ''}`}
               type="button"
@@ -49,40 +77,36 @@ function MenuSection() {
         </div>
 
         <div className="menu-grid" id="menu-items" aria-live="polite">
-          {visibleCategories.map((category) => (
-            <section
-              className="menu-category"
-              key={category.id}
-              aria-labelledby={`${category.id}-title`}
-            >
-              <div className="menu-category__heading">
-                <span>
-                  {String(menuCategories.indexOf(category) + 1).padStart(2, '0')}
-                </span>
-                <div>
-                  <h3 id={`${category.id}-title`}>{category.name}</h3>
-                  <p>{category.description}</p>
-                </div>
+          {visibleItems.map((item, index) => (
+            <article className="menu-card" key={item.id}>
+              <div className="menu-card__ornament" aria-hidden="true">
+                <span>{String(index + 1).padStart(2, '0')}</span>
+                <span className="menu-card__ornament-line" />
               </div>
-              <ul className="menu-list">
-                {category.items.map((item) => (
-                  <li className="menu-item" key={item.id}>
-                    <div>
-                      <h4>{item.name}</h4>
-                      <p>{item.description}</p>
-                    </div>
-                    <span>{item.price}</span>
-                  </li>
-                ))}
-              </ul>
-            </section>
+              <p className="menu-card__category">{item.category}</p>
+              <h3>{item.name}</h3>
+              <button
+                className="text-link menu-card__details"
+                type="button"
+                aria-label={`Xem thông tin ${item.name}`}
+                aria-haspopup="dialog"
+                onClick={(event) => {
+                  triggerRef.current = event.currentTarget
+                  setSelectedDish(item)
+                }}
+              >
+                Thông tin món <span aria-hidden="true">↗</span>
+              </button>
+            </article>
           ))}
         </div>
+
         <p className="menu-note">
-          * Thực đơn và giá trên website là thông tin mẫu, có thể thay đổi theo
-          mùa.
+          Tên món được ghi nhận từ nguồn công khai. Vui lòng gọi hotline để xác
+          nhận tình trạng phục vụ.
         </p>
       </div>
+      <DishDetailModal dish={selectedDish} onClose={closeModal} />
     </section>
   )
 }

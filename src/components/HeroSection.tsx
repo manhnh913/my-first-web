@@ -1,4 +1,4 @@
-import { restaurantImages } from '../data/restaurantData'
+import { restaurantProfile } from '../data/restaurantData'
 
 function HeroSection() {
   return (
@@ -9,46 +9,45 @@ function HeroSection() {
     >
       <div className="container hero-section__inner">
         <div className="hero-section__copy">
-          <p className="eyebrow">ẨM THỰC VIỆT ĐƯƠNG ĐẠI</p>
+          <p className="eyebrow">
+            Hà Nội · 50 Nguyễn Chí Thanh
+          </p>
           <h1 id="hero-title">
-            <span className="hero-section__title-main">Hương vị tinh tế</span>
+            <span className="hero-section__title-main">
+              {restaurantProfile.name}
+            </span>
             <span className="hero-section__title-accent">
-              - Khoảnh khắc <span>đáng nhớ</span>
+              {restaurantProfile.descriptor}
             </span>
           </h1>
-          <p className="hero-section__description">
-            Từ nguyên liệu tươi lành đến cách bày biện chỉn chu, mỗi món ăn tại
-            An Nhiên là lời mời bạn chậm lại và tận hưởng.
-          </p>
+          <p className="hero-section__description">{restaurantProfile.heroDescription}</p>
           <div className="hero-section__actions">
-            <a className="button button--primary" href="#thuc-don">
-              Xem thực đơn <span aria-hidden="true">↗</span>
-            </a>
-            <a className="button button--outline" href="#dat-ban">
+            <a className="button button--primary" href="#dat-ban">
               Đặt bàn
             </a>
+            <a className="button button--outline" href="#thuc-don">
+              Xem thực đơn <span aria-hidden="true">↗</span>
+            </a>
           </div>
-          <div className="hero-section__note">
-            <span className="hero-section__note-mark" aria-hidden="true">
-              ✳
-            </span>
-            Tươi ngon mỗi ngày · Ấm áp trong từng khoảnh khắc
-          </div>
+          <p className="hero-section__note">
+            {restaurantProfile.venue} · {restaurantProfile.seatingCapacity}
+          </p>
         </div>
 
         <div className="hero-section__visual">
-          <img
-            className="hero-section__image"
-            src={restaurantImages.hero}
-            alt="Không gian ấm cúng tại An Nhiên Restaurant"
-            fetchPriority="high"
-            loading="eager"
-            decoding="async"
-          />
-          <div className="hero-section__image-caption">
-            <span>AN NHIÊN</span>
-            <span>Một chốn quen để trở về</span>
+          <div className="hero-art" aria-hidden="true">
+            <span className="hero-art__index">HÀ NỘI · 50</span>
+            <div className="hero-art__sun" />
+            <div className="hero-art__arch">
+              <span>50</span>
+              <span>BISTRO</span>
+            </div>
+            <span className="hero-art__side-label">RESTAURANT &amp; CAFE</span>
+            <span className="hero-art__base-line" />
           </div>
+          <p className="hero-section__visual-note">
+            Đồ họa minh họa, không phải ảnh thực tế tại nhà hàng.
+          </p>
         </div>
       </div>
     </section>
